@@ -8,7 +8,24 @@ $BASE_DIR = Get-Location
 $APPDATA_ROAMING = $env:APPDATA
 $USER_PROFILE = $env:USERPROFILE
 
-# 1. Disable ChromaDB Timeout (The "Hang" Fix)
+# 1. Pre-Flight AI Environment Check
+Write-Host "[Environment] Checking for AI Agents..."
+$claudeFound = Get-Command claude -ErrorAction SilentlyContinue
+$geminiFound = Get-Command gemini -ErrorAction SilentlyContinue
+
+if (!$claudeFound -and !$geminiFound) {
+    Write-Host "⚠️  [Warning] Neither Claude CLI nor Gemini CLI was found on this system." -ForegroundColor Yellow
+    Write-Host "   The Oracle backend will install, but Auto-MCP connection will be skipped." -ForegroundColor Yellow
+    Write-Host "   Recommendation: Install Claude or Gemini before running this setup for a 1-click experience." -ForegroundColor Yellow
+    Write-Host "   Press any key to continue installation anyway, or Ctrl+C to abort..." -ForegroundColor Yellow
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    Write-Host ""
+} else {
+    if ($claudeFound) { Write-Host "✅ Found Claude CLI." -ForegroundColor Green }
+    if ($geminiFound) { Write-Host "✅ Found Gemini CLI." -ForegroundColor Green }
+}
+
+# 2. Disable ChromaDB Timeout (The "Hang" Fix)
 Write-Host "[Config] Disabling ChromaDB timeout for instant startup..."
 $ENV_PATH = Join-Path $BASE_DIR "arra-oracle\.env"
 @"
