@@ -181,11 +181,39 @@ async function speakWithEdgeTts(
   }
 }
 
-async function speakWithMac(
+async function speakWithMacOrWin(
   text: string,
   voice: string,
   rate?: string
 ): Promise<boolean> {
+  const isWindows = process.platform === "win32";
+
+  if (isWindows) {
+    try {
+      console.log(`🪟 Speaking with Windows Native TTS...`);
+      const isThai = voice.toLowerCase().includes("thai");
+      const psCommand = `
+$speak = New-Object -ComObject SAPI.SpVoice;
+if ("${isThai}" -eq "true") {
+    foreach ($v in $speak.GetVoices()) {
+        if ($v.GetAttribute("Language") -eq "41e" -or $v.GetDescription() -like "*Thai*") {
+            $speak.Voice = $v;
+            break;
+        }
+    }
+}
+$speak.Speak("${text.replace(/"/g, '`"')}");
+`;
+      const proc = Bun.spawn(["powershell", "-NoProfile", "-Command", psCommand]);
+      await proc.exited;
+      return proc.exitCode === 0;
+    } catch (e) {
+      console.error("Windows TTS Error:", e);
+      return false;
+    }
+  }
+
+  // macOS Fallback
   try {
     const args = ["say", "-v", voice];
 
@@ -223,7 +251,7 @@ async function main() {
     console.log("  --thai, -t     Use Thai voice");
     console.log("  --female, -f   Use female voice");
     console.log("  --voice, -v    Specific voice name");
-    console.log("  --mac, -m      Force macOS say");
+    console.log("  --mac, -m      Force OS native (macOS/Windows) instead of edge-tts");
     console.log("  --rate, -r     Speech rate");
     console.log("  --list, -l     List available voices");
     console.log("\nExamples:");
@@ -239,17 +267,18 @@ async function main() {
 
   // Determine voice
   let edgeVoice = options.voice || VOICES[lang][gender];
-  let macVoice = MAC_VOICES[lang][gender];
+  // For Windows, we'll just pass 'thai' or 'english' down to trigger the right fallback
+  let macVoice = process.platform === "win32" ? lang : MAC_VOICES[lang][gender];
 
   // Try edge-tts first (unless --mac specified)
   if (!options.mac && hasEdgeTts) {
     const success = await speakWithEdgeTts(options.text, edgeVoice, options.rate);
     if (success) return;
-    console.log("Falling back to macOS say...");
+    console.log(`Falling back to ${process.platform === "win32" ? "Windows" : "macOS"} native TTS...`);
   }
 
-  // Fall back to macOS say
-  await speakWithMac(options.text, macVoice, options.rate);
+  // Fall back to native OS TTS
+  await speakWithMacOrWin(options.text, macVoice, options.rate);
 }
 
 main();

@@ -1,0 +1,8 @@
+feat: Unified Windows Setup Protocol and native TTS fix
+
+- Added setup.ps1 for automated Windows setup, indexing, and MCP registration.
+- Fixed 'speak' skill for Windows using PowerShell SAPI.SpVoice.
+- Verified database and server health.
+- Resolved schema conflict in arra-oracle.
+
+The Oracle System is now 100% connected and functional on Windows.

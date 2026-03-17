@@ -1,1 +1,71 @@
-﻿@echo off`nsetlocal enabledelayedexpansion`n`necho 🌌 [Oracle System] Starting Unified Setup Protocol...`necho.`n`n:: Get current directory (Absolute Path)`nset \"BASE_DIR=%~dp0\"`n`n:: 1. Check for Bun`nwhere bun >nul 2>nul`nif %errorlevel% neq 0 (`n    echo ❌ [Error] Bun runtime not found. Please install it from https://bun.sh/`n    pause`n    exit /b 1`n)`necho ✅ [Runtime] Bun is available.`necho.`n`n:: 2. Check for Claude CLI`nwhere claude >nul 2>nul`nif %errorlevel% neq 0 (`n    echo ⚠️  [Warning] Claude CLI not found.`n    echo    Run: npm install -g @anthropic-ai/claude-code`n) else (`n    echo ✅ [Auth] Claude CLI is available.`n)`necho.`n`n:: 3. Generate Machine-Specific MCP Config`necho 🛠️  [Config] Generating dynamic MCP configuration...`nset \"MCP_FILE=%BASE_DIR%arra-oracle-mcp.json\"`nset \"INDEX_PATH=%BASE_DIR%arra-oracle\src\index.ts\"`nset \"INDEX_PATH=%INDEX_PATH:\=\\%\"`n`necho { > \"%MCP_FILE%\"`necho   \"mcpServers\": { >> \"%MCP_FILE%\"`necho     \"arra\": { >> \"%MCP_FILE%\"`necho       \"command\": \"bun\", >> \"%MCP_FILE%\"`necho       \"args\": [ >> \"%MCP_FILE%\"`necho         \"%INDEX_PATH%\" >> \"%MCP_FILE%\"`necho       ] >> \"%MCP_FILE%\"`necho     } >> \"%MCP_FILE%\"`necho   } >> \"%MCP_FILE%\"`necho } >> \"%MCP_FILE%\"`necho ✅ [Config] Generated: %MCP_FILE%`necho.`n`n:: 4. Setup Subsystems`nset \"folders=apollo-oracle arra-oracle pulse-cli oracle-skills-cli\"`nfor %%f in (%folders%) do (`n    if exist \"%BASE_DIR%%%f\" (`n        echo 🚀 [Setup] Processing %%f...`n        cd /d \"%BASE_DIR%%%f\"`n        if exist \"package.json\" (`n            echo 📦 [Bun] Installing dependencies for %%f...`n            call bun install`n            if \"%%f\"==\"arra-oracle\" (`n                echo 🗄️  [DB] Initializing Database for Arra...`n                call bunx drizzle-kit push`n            )`n        )`n        cd /d \"%BASE_DIR%\"`n        echo.`n    )`n)`n`n:: 5. Done`necho ✨ [Oracle System] Setup Complete! Everything is ready.`necho.`nPause
+@echo off
+setlocal enabledelayedexpansion
+
+echo 🌌 [Oracle System] Starting Unified Setup Protocol...
+echo.
+
+:: Get current directory (Absolute Path)
+set "BASE_DIR=%~dp0"
+
+:: 1. Check for Bun
+where bun >nul 2>nul
+if %errorlevel% neq 0 (
+    echo ❌ [Error] Bun runtime not found. Please install it from https://bun.sh/
+    pause
+    exit /b 1
+)
+echo ✅ [Runtime] Bun is available.
+echo.
+
+:: 2. Check for Claude CLI
+where claude >nul 2>nul
+if %errorlevel% neq 0 (
+    echo ⚠️  [Warning] Claude CLI not found.
+    echo    Run: npm install -g @anthropic-ai/claude-code
+) else (
+    echo ✅ [Auth] Claude CLI is available.
+)
+echo.
+
+:: 3. Generate Machine-Specific MCP Config
+echo 🛠️  [Config] Generating dynamic MCP configuration...
+set "MCP_FILE=%BASE_DIR%arra-oracle-mcp.json"
+set "INDEX_PATH=%BASE_DIR%arra-oracle\src\index.ts"
+set "INDEX_PATH=%INDEX_PATH:\=\\%"
+
+echo { > "%MCP_FILE%"
+echo   "mcpServers": { >> "%MCP_FILE%"
+echo     "arra": { >> "%MCP_FILE%"
+echo       "command": "bun", >> "%MCP_FILE%"
+echo       "args": [ >> "%MCP_FILE%"
+echo         "%INDEX_PATH%" >> "%MCP_FILE%"
+echo       ] >> "%MCP_FILE%"
+echo     } >> "%MCP_FILE%"
+echo   } >> "%MCP_FILE%"
+echo } >> "%MCP_FILE%"
+echo ✅ [Config] Generated: %MCP_FILE%
+echo.
+
+:: 4. Setup Subsystems
+set "folders=apollo-oracle arra-oracle pulse-cli oracle-skills-cli"
+for %%f in (%folders%) do (
+    if exist "%BASE_DIR%%%f" (
+        echo 🚀 [Setup] Processing %%f...
+        cd /d "%BASE_DIR%%%f"
+        if exist "package.json" (
+            echo 📦 [Bun] Installing dependencies for %%f...
+            call bun install
+            if "%%f"=="arra-oracle" (
+                echo 🗄️  [DB] Initializing Database for Arra...
+                call bunx drizzle-kit push
+            )
+        )
+        cd /d "%BASE_DIR%"
+        echo.
+    )
+)
+
+:: 5. Done
+echo ✨ [Oracle System] Setup Complete! Everything is ready.
+echo.
+pause

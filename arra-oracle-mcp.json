@@ -1,1 +1,10 @@
-﻿{`n  \"mcpServers\": {`n    \"arra\": {`n      \"command\": \"bun\",`n      \"args\": [`n        \"%~dp0arra-oracle/src/index.ts\"`n      ]`n    }`n  }`n}
+{ 
+  "mcpServers": { 
+    "arra": { 
+      "command": "bun", 
+      "args": [ 
+        "C:\\Oracle-System\\arra-oracle\\src\\index.ts" 
+      ] 
+    } 
+  } 
+} 
