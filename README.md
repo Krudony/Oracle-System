@@ -1,6 +1,6 @@
-﻿## 🌌 Oracle System Monorepo
+﻿# 🌌 Oracle System
 
-\"The Oracle Keeps the Human Human\"
+*\"The Oracle Keeps the Human Human\"*
 Distributed Intelligence | Persistent Context | Human-Centric AI
 
 ---
@@ -9,30 +9,29 @@ Welcome to the **Oracle System**, a unified monorepo housing the core components
 
 ### 🏛️ Ecosystem Architecture
 
-| Component | Role | Description |
-| :--- | :--- | :--- |
-| [**Apollo**](./apollo-oracle) | ☀️ Visionary | God of Light & Prophecy. Manages system-wide patterns. |
-| [**Arra**](./arra-oracle) | 🧠 Memory | MCP-powered memory layer with semantic search. |
-| [**Pulse**](./pulse-cli) | 💓 Heartbeat | Operational CLI for task management and timelines. |
-| [**Skills**](./oracle-skills-cli) | ⚔️ Abilities | Modular engine for specialized AI skills. |
+The system is divided into four specialized layers working in harmony:
+
+- **Apollo** ([./apollo-oracle](./apollo-oracle)): The visionary layer. Manages system-wide patterns and recursion.
+- **Arra** ([./arra-oracle](./arra-oracle)): The memory layer. MCP-powered storage with semantic search and knowledge graph.
+- **Pulse** ([./pulse-cli](./pulse-cli)): The operational heartbeat. Manages tasks, timelines, and coordination.
+- **Skills** ([./oracle-skills-cli](./oracle-skills-cli)): The ability engine. Extends the system with modular AI skills.
 
 ### 🚀 Quick Start
 
-1. **Clone the system** to `C:\Oracle-System`:
+1. **Clone the system** to your local root (e.g., `C:\\Oracle-System`):
    ```bash
-   git clone https://github.com/Krudony/Oracle-System.git C:\Oracle-System
+   git clone https://github.com/Krudony/Oracle-System.git C:\\Oracle-System
    ```
-2. **Run the Setup Script**:
+2. **Run the Setup Script** to install all dependencies:
    ```cmd
    setup.bat
    ```
 
 ### 🛠️ Key Operations
 
-- **Sync Changes**: `git pull origin main` && `setup.bat` 
-- **MCP Integration**: Link `C:\Oracle-System\arra-oracle-mcp.json` to your config.
-- **Skill Deployment**: `oracle-skills install <name>` 
-- **System Status**: `pulse status` 
+- **Syncing**: `git pull origin main` followed by `setup.bat` to keep all components updated.
+- **MCP Integration**: Point your AI client to `C:\\Oracle-System\\arra-oracle-mcp.json`.
+- **System Status**: Use `pulse status` to check the operational health of the system.
 
 ### 📜 The 5 Principles
 
