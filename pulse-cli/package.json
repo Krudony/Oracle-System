@@ -1,0 +1,17 @@
+{
+  "name": "pulse-oracle",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "test": "bun test",
+    "pulse": "bun packages/cli/src/pulse.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pulse-Oracle/pulse-cli"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,22 @@
+{
+  "org": "your-org",
+  "projectNumber": 1,
+  "oracleRepos": {
+    "pulse": "pulse-oracle",
+    "neo": "neo-oracle"
+  },
+  "routing": {
+    "label": [
+      { "match": ["oracle/neo"], "oracle": "Neo" }
+    ],
+    "repo": {
+      "neo-oracle": "Neo",
+      "pulse-oracle": "Pulse"
+    },
+    "keyword": [
+      { "match": ["code", "bug", "feature"], "oracle": "Neo" },
+      { "match": ["blog", "publish"], "oracle": "Calliope" }
+    ],
+    "default": "Pulse"
+  }
+}

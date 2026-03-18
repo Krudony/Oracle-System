@@ -1,0 +1,60 @@
+{
+  "name": "oracle-skills",
+  "version": "3.2.1",
+  "description": "Install Oracle skills to Claude Code, OpenCode, Cursor, and 11+ AI coding agents",
+  "type": "module",
+  "bin": {
+    "oracle-skills": "./src/cli/index.ts"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun scripts/ensure-vfs-stub.ts && bun build src/cli/index.ts --outdir dist --target bun --minify",
+    "build:native": "bun scripts/build-native.ts",
+    "dev": "bun run src/cli/index.ts",
+    "test": "bun test __tests__/",
+    "compile": "bun scripts/compile.ts",
+    "version": "bun run compile && bun scripts/update-readme-table.ts && git add src/commands README.md",
+    "prepare": "lefthook install",
+    "prepublishOnly": "bun run compile && bun run build",
+    "clawhub": "bun scripts/clawhub-build.ts"
+  },
+  "keywords": [
+    "oracle",
+    "skills",
+    "claude-code",
+    "opencode",
+    "cursor",
+    "codex",
+    "ai-agents",
+    "soul-brews",
+    "cli",
+    "bun"
+  ],
+  "author": "Nat Weerawan <nat@soulbrews.studio> (https://github.com/nazt)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Soul-Brews-Studio/oracle-skills-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Soul-Brews-Studio/oracle-skills-cli/issues"
+  },
+  "homepage": "https://github.com/Soul-Brews-Studio/oracle-skills-cli#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.6",
+    "@types/node": "^20.0.0",
+    "lefthook": "^2.0.15",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "commander": "^12.0.0",
+    "mqtt": "^5.14.1"
+  }
+}

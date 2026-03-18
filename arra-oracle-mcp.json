@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "arra": {
+      "command": "bun",
+      "args": [
+        "C:/Oracle-System/arra-oracle/src/index.ts"
+      ]
+    }
+  }
+}
